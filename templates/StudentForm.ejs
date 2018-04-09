@@ -1,0 +1,148 @@
+<html>
+
+<head>
+    <title>Student Management System</title>
+    <% include CSSImport %>
+        <% include JSSImport %>
+</head>
+
+<body>
+    <h1> Add New Student Information</h1>
+    <div id="studentDivId" class="container-fluid">
+        <form action="AddStudent" method="POST" id="studentFormId">
+            <div class="row">
+
+                <div class="col-lg">
+
+                    <div class="form-group">
+                        <label for="userName">Student Name:</label>
+                        <input type="text" class="form-control" id="userName" name="userName">
+                        <input type="hidden" class="form-control" id="userId" name="userId">
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="surName">Surname:</label>
+                        <input type="text" class="form-control" id="surName" name="surName">
+                    </div>
+                    <div class="form-group">
+                        <label for="dob">Date of Birth:</label>
+                        <input type="date" class="form-control" id="dob" name="dob" pattern="dd-mm-yyyy">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <input type="radio" class="" id="male" name="gender" value="MALE">Male
+                        <input type="radio" class="" id="female" name="gender" value="FEMALE">Female
+                    </div>
+                </div>
+                <div class="col-lg">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" >
+                    </div>
+                    <div class="form-group">
+                        <label for="mobileNo">Mobile No:</label>
+                        <input type="text" class="form-control" id="mobileNo" name="mobileNo">
+                    </div>
+                    <div class="form-group">
+                        <label for="isActive">Status:</label>
+                        <input type="checkbox" class="" id="isActive" name="isActive" value="N">
+                    </div>
+                </div>
+                <div class="col-lg"></div>
+
+            </div>
+
+            <div class="btn-center">
+                <button type="button" class="btn btn-primary" onclick="callSave()">Save</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+
+    $("#isActive").click(function(){
+        if ($(this).is(':checked')) {
+            $(this).val('Y');
+        } else {
+            $(this).val('N');
+        }
+    });
+
+    function callSave() {
+        
+        $('#studentFormId').ajaxSubmit({
+            type:'POST',
+            url: '/sms/AddStudent',
+            dataType: 'json',
+            beforeSubmit: callvalidation,
+            success: function(responseText) {
+               console.log('responseText : '+JSON.stringify(responseText));
+            },
+            error : function(xhr, status) {
+			    alert('Sorry, there was a problem!');
+		    }
+        });
+    }
+
+    function callvalidation(formData, jqForm, options) {
+
+        var userName = $('#userName').val();
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
+        var surName = $('#surName').val();
+        var dob = $('#dob').val();
+        var gender = $("input[name='gender']:checked").val();
+        var email = $('#email').val();
+        var mobileNo = $('#mobileNo').val();
+
+        if (userName == '') {
+            alert('Please enter Student Name');
+            return false;
+        }
+
+        if (firstName == '') {
+            alert('Please enter First Name');
+            return false;
+        }
+
+        if (lastName == '') {
+            alert('Please enter Last Name');
+            return false;
+        }
+
+        if (surName == '') {
+            alert('Please enter Surname');
+            return false;
+        }
+
+        if (dob == '') {
+            alert('Please enter Date of Birth');
+            return false;
+        }
+
+        if (gender == '') {
+            alert('Please select the Gender');
+            return false;
+        }
+
+        if (email == '') {
+            alert('Please enter Email');
+            return false;
+        }
+
+        if (mobileNo == '') {
+            alert('Please enter Mobile No');
+            return false;
+        }
+
+       return true;
+    }
+</script>
+</html>
